@@ -1,652 +1,1964 @@
 <!DOCTYPE html>
-<html lang="fr" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trésors Islamiques - Rappels, Coran et Hadiths</title>
+    <title>Masjid Al-Noor - Ressources Islamiques</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for Islamic Calendar -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
-        :root {
-            --primary-color: #0d6e6e;
-            --secondary-color: #f0e6d2;
-            --accent-color: #c19a6b;
-            --text-color: #333;
-            --light-color: #f9f9f9;
-            --dark-color: #1a1a1a;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
         }
-        
+
+        :root {
+            --primary-green: #2d5a2d;
+            --secondary-green: #4a7c59;
+            --gold: #d4af37;
+            --light-gold: #f4e4a6;
+            --dark-blue: #1e3a5f;
+            --light-blue: #e8f4f8;
+            --cream: #f9f7f4;
+            --dark-text: #2c3e50;
+            --light-text: #ecf0f1;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
         body {
-            background-color: var(--light-color);
-            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
             line-height: 1.6;
+            color: var(--dark-text);
+            background: linear-gradient(135deg, var(--cream) 0%, var(--light-blue) 100%);
+            min-height: 100vh;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+
+        .arabic-text {
+            font-family: 'Amiri', 'Scheherazade New', serif;
+            direction: rtl;
+            text-align: right;
         }
-        
-        /* Header Styles */
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: "";
+
+        /* Islamic Patterns */
+        .islamic-pattern {
+            background-image: 
+                radial-gradient(circle at 25% 25%, var(--gold) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, var(--gold) 2px, transparent 2px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.1;
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('islamic-pattern.png') repeat;
-            opacity: 0.1;
             pointer-events: none;
         }
-        
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            color: var(--light-text);
+            padding: 20px 0;
+            box-shadow: 0 4px 20px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
         .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
-        }
-        
-        .logo i {
-            font-size: 2.5rem;
-            margin-left: 15px;
-        }
-        
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-right: 20px;
-        }
-        
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
-        
-        nav ul li a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(13, 110, 110, 0.8), rgba(13, 110, 110, 0.9)), url('mosque-bg.jpg') center/cover no-repeat;
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-            position: relative;
-        }
-        
-        .hero h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 30px;
-        }
-        
-        /* Main Content */
-        .main-content {
-            padding: 60px 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-        }
-        
-        .section-title h2 {
-            font-size: 2rem;
-            color: var(--primary-color);
-            display: inline-block;
-            padding-bottom: 10px;
-        }
-        
-        .section-title h2::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background-color: var(--accent-color);
-        }
-        
-        /* Features Section */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-        
-        .feature-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-            padding: 30px 20px;
-            border-top: 5px solid var(--accent-color);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-        
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-        
-        .feature-card p {
-            margin-bottom: 20px;
-            color: var(--text-color);
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        
-        .btn:hover {
-            background-color: #0b5a5a;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn i {
-            margin-left: 8px;
-        }
-        
-        /* Additional Resources */
-        .resources {
-            background-color: var(--secondary-color);
-            padding: 60px 0;
-            text-align: center;
-        }
-        
-        .resource-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-        
-        .resource-card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-        
-        .resource-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .resource-card h3 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        /* Prayer Times */
-        .prayer-times {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-        }
-        
-        .prayer-times h2 {
-            margin-bottom: 30px;
-        }
-        
-        .times-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
-        .prayer-time {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 15px 25px;
-            border-radius: 8px;
-            min-width: 120px;
-        }
-        
-        .prayer-time.active {
-            background-color: var(--accent-color);
-            font-weight: bold;
-        }
-        
-        .prayer-time p:first-child {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 50px 0 20px;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-column h3 {
-            color: var(--accent-color);
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-column ul li a {
-            color: #ddd;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-column ul li a:hover {
-            color: var(--accent-color);
-        }
-        
-        .social-links {
-            display: flex;
             gap: 15px;
         }
-        
-        .social-links a {
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--gold);
+        }
+
+        .logo h1 {
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover {
+            color: var(--gold);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Section Styles */
+        .section {
+            background: white;
+            margin: 30px 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            overflow: hidden;
+            position: relative;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-green) 100%);
+            color: var(--light-text);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M30 30l15-15v30zM15 15l15 15H0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-family: 'Amiri', serif;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-content {
+            padding: 40px;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
             color: white;
-            background-color: rgba(255, 255, 255, 0.1);
-            width: 40px;
-            height: 40px;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow);
+            background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+        }
+
+        .btn.btn-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, #b8941f 100%);
+        }
+
+        .btn.btn-gold:hover {
+            background: linear-gradient(135deg, #b8941f 0%, var(--gold) 100%);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-blue);
+            border-top: 5px solid var(--primary-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Quran Section */
+        .quran-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        .surah-list {
+            background: var(--cream);
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .surah-item {
+            padding: 15px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .surah-item:hover {
+            background: var(--light-gold);
+            border-left-color: var(--gold);
+            transform: translateX(5px);
+        }
+
+        .surah-item.active {
+            background: var(--light-gold);
+            border-left-color: var(--primary-green);
+        }
+
+        .quran-reader {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            min-height: 600px;
+        }
+
+        .verse {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--light-blue);
+            border-radius: 10px;
+            border-right: 4px solid var(--primary-green);
+        }
+
+        .verse-arabic {
+            font-size: 1.8rem;
+            line-height: 2.2;
+            margin-bottom: 15px;
+            color: var(--dark-blue);
+        }
+
+        .verse-translation {
+            font-style: italic;
+            color: var(--dark-text);
+            font-size: 1.1rem;
+        }
+
+        .verse-number {
+            background: var(--gold);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        /* Audio Player */
+        .audio-player {
+            background: var(--dark-blue);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .audio-btn {
+            background: var(--gold);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            background: var(--light-gold);
+            color: var(--dark-blue);
+        }
+
+        /* Hadith Section */
+        .hadith-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .hadith-item {
+            background: linear-gradient(135deg, var(--cream) 0%, white 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid var(--gold);
+            position: relative;
+        }
+
+        .hadith-item::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--gold);
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-family: serif;
+            opacity: 0.3;
+        }
+
+        .hadith-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            padding-left: 40px;
+        }
+
+        .hadith-reference {
+            text-align: right;
+            font-weight: 600;
+            color: var(--primary-green);
+            border-top: 1px solid var(--gold);
+            padding-top: 10px;
+        }
+
+        /* Prayer Times */
+        .prayer-times-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .prayer-time-card {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prayer-time-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255,255,255,0.1) 60deg, transparent 120deg);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .prayer-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .prayer-time {
+            font-size: 1.8rem;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Qibla Direction */
+        .qibla-compass {
+            width: 300px;
+            height: 300px;
+            margin: 30px auto;
+            position: relative;
+            background: radial-gradient(circle, var(--gold) 0%, var(--primary-green) 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
         }
-        
-        .social-links a:hover {
-            background-color: var(--accent-color);
-            transform: translateY(-3px);
+
+        .compass-needle {
+            width: 4px;
+            height: 120px;
+            background: white;
+            position: absolute;
+            border-radius: 2px;
+            transform-origin: bottom center;
+            transition: transform 0.5s ease;
         }
-        
-        .copyright {
+
+        .compass-needle::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -8px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid red;
+        }
+
+        /* Location Input */
+        .location-input {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .location-input input {
+            padding: 12px 20px;
+            border: 2px solid var(--primary-green);
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            min-width: 200px;
+        }
+
+        .location-input input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Islamic Calendar */
+        .calendar-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .islamic-date {
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            font-size: 0.9rem;
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            margin-bottom: 20px;
+            font-family: 'Amiri', serif;
         }
-        
+
+        /* Resources Grid */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .resource-header {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-green) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .resource-content {
+            padding: 25px;
+        }
+
+        .resource-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-green);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                text-align: center;
+                gap: 20px;
             }
-            
-            .logo {
-                margin-bottom: 20px;
+
+            .nav-menu {
+                gap: 15px;
+                flex-wrap: wrap;
                 justify-content: center;
             }
-            
-            nav ul {
-                justify-content: center;
+
+            .quran-container {
+                grid-template-columns: 1fr;
             }
-            
-            .hero h2 {
+
+            .prayer-times-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .section-header h2 {
                 font-size: 2rem;
             }
-            
-            .hero p {
-                font-size: 1rem;
+
+            .controls {
+                justify-content: center;
             }
-            
-            .feature-card {
-                padding: 20px 15px;
+
+            .location-input {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .location-input input {
+                width: 100%;
+                max-width: 300px;
             }
         }
-        
-        /* Islamic decorative elements */
-        .islamic-pattern {
-            background: url('islamic-pattern.png') repeat;
-            height: 30px;
-            opacity: 0.2;
-            margin: 30px 0;
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        
-        .arabic-text {
-            font-family: 'Traditional Arabic', 'Arial', sans-serif;
-            font-size: 1.2rem;
-            color: var(--primary-color);
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-green);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-green);
+        }
+
+        /* Error and Success Messages */
+        .message {
+            padding: 15px 20px;
+            border-radius: 10px;
             margin: 20px 0;
-            text-align: center;
+            display: none;
+        }
+
+        .message.error {
+            background: #fee;
+            color: #c33;
+            border-left: 4px solid #c33;
+        }
+
+        .message.success {
+            background: #efe;
+            color: #3c3;
+            border-left: 4px solid #3c3;
+        }
+
+        .message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Islamic Geometric Pattern Background */
+        .geometric-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(45deg, var(--gold) 25%, transparent 25%),
+                linear-gradient(-45deg, var(--gold) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, var(--gold) 75%),
+                linear-gradient(-45deg, transparent 75%, var(--gold) 75%);
+            background-size: 30px 30px;
+            background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
         }
     </style>
 </head>
 <body>
+    <div class="geometric-bg"></div>
+    
     <!-- Header -->
-    <header>
-        <div class="container header-content">
+    <header class="header">
+        <div class="header-content">
             <div class="logo">
                 <i class="fas fa-mosque"></i>
-                <h1>Trésors Islamiques</h1>
+                <h1>Masjid Al-Noor</h1>
             </div>
             <nav>
-                <ul>
-                    <li><a href="#rappels">Rappels</a></li>
-                    <li><a href="#coran">Coran</a></li>
-                    <li><a href="#hadith">Hadiths</a></li>
-                    <li><a href="#ressources">Ressources</a></li>
+                <ul class="nav-menu">
+                    <li><a onclick="showSection('home')"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li><a onclick="showSection('quran')"><i class="fas fa-book"></i> Coran</a></li>
+                    <li><a onclick="showSection('hadith')"><i class="fas fa-quote-right"></i> Hadiths</a></li>
+                    <li><a onclick="showSection('prayer')"><i class="fas fa-pray"></i> Prières</a></li>
+                    <li><a onclick="showSection('qibla')"><i class="fas fa-compass"></i> Qibla</a></li>
+                    <li><a onclick="showSection('calendar')"><i class="fas fa-calendar-islamic"></i> Calendrier</a></li>
+                    <li><a onclick="showSection('resources')"><i class="fas fa-book-open"></i> Ressources</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-    
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h2>Découvrez les Trésors de l'Islam</h2>
-            <p>Accédez facilement aux rappels islamiques, au Saint Coran et aux hadiths authentiques en un seul clic.</p>
-            <a href="#features" class="btn">Commencer <i class="fas fa-arrow-down"></i></a>
-        </div>
-    </section>
-    
-    <div class="islamic-pattern"></div>
-    
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <section id="features">
-                <div class="section-title">
-                    <h2>Nos Services</h2>
-                </div>
-                
-                <div class="features">
-                    <div class="feature-card" id="rappels">
-                        <div class="feature-icon">
-                            <i class="fas fa-book-quran"></i>
+
+    <div class="container">
+        <!-- Messages -->
+        <div id="message" class="message"></div>
+
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="section-header">
+                <h2><i class="fas fa-star-and-crescent"></i> Bienvenue chez Masjid Al-Noor</h2>
+                <p>Votre ressource complète pour l'Islam</p>
+            </div>
+            <div class="section-content">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-book-quran fa-2x"></i>
                         </div>
-                        <h3>Rappels Islamiques</h3>
-                        <p>Accédez aux rappels islamiques compilés selon les quatre grandes écoles de pensée (Hanafi, Maliki, Shafi'i, Hanbali) en un seul clic.</p>
-                        <a href="#" class="btn">Voir les rappels <i class="fas fa-external-link-alt"></i></a>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Coran Complet</h3>
+                            <p>Lisez et écoutez le Coran avec traductions en français et récitations authentiques.</p>
+                            <button class="btn" onclick="showSection('quran')">
+                                <i class="fas fa-play"></i> Commencer
+                            </button>
+                        </div>
                     </div>
                     
-                    <div class="feature-card" id="coran">
-                        <div class="feature-icon">
-                            <i class="fas fa-quran"></i>
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-quote-right fa-2x"></i>
                         </div>
-                        <h3>Coran Complet</h3>
-                        <p>Écoutez et lisez le Saint Coran en entier avec une interface simple et élégante. Plusieurs récitateurs disponibles.</p>
-                        <a href="#" class="btn">Lire le Coran <i class="fas fa-play"></i></a>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Hadiths Authentiques</h3>
+                            <p>Collection de hadiths authentiques pour guider votre vie spirituelle.</p>
+                            <button class="btn" onclick="showSection('hadith')">
+                                <i class="fas fa-search"></i> Explorer
+                            </button>
+                        </div>
                     </div>
                     
-                    <div class="feature-card" id="hadith">
-                        <div class="feature-icon">
-                            <i class="fas fa-book-open"></i>
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-pray fa-2x"></i>
                         </div>
-                        <h3>Recueil de Hadiths</h3>
-                        <p>Explorez les hadiths authentiques des principales collections (Bukhari, Muslim, etc.) avec recherches par thème et mot-clé.</p>
-                        <a href="#" class="btn">Consulter les hadiths <i class="fas fa-search"></i></a>
-                    </div>
-                </div>
-                
-                <div class="arabic-text">
-                    "وذكر فإن الذكرى تنفع المؤمنين" (سورة الذاريات: 55)
-                </div>
-            </section>
-            
-            <div class="islamic-pattern"></div>
-            
-            <!-- Prayer Times -->
-            <section class="prayer-times">
-                <div class="container">
-                    <h2>Heures de Prière</h2>
-                    <div class="times-container">
-                        <div class="prayer-time">
-                            <p>Fajr</p>
-                            <p>05:12</p>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Horaires de Prière</h3>
+                            <p>Horaires de prière précis selon votre localisation géographique.</p>
+                            <button class="btn" onclick="showSection('prayer')">
+                                <i class="fas fa-clock"></i> Voir les horaires
+                            </button>
                         </div>
-                        <div class="prayer-time">
-                            <p>Dhuhr</p>
-                            <p>12:45</p>
-                        </div>
-                        <div class="prayer-time active">
-                            <p>Asr</p>
-                            <p>16:20</p>
-                        </div>
-                        <div class="prayer-time">
-                            <p>Maghrib</p>
-                            <p>19:05</p>
-                        </div>
-                        <div class="prayer-time">
-                            <p>Isha</p>
-                            <p>20:30</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <div class="islamic-pattern"></div>
-            
-            <!-- Additional Resources -->
-            <section class="resources" id="ressources">
-                <div class="container">
-                    <div class="section-title">
-                        <h2>Ressources Supplémentaires</h2>
                     </div>
                     
-                    <div class="resource-cards">
-                        <div class="resource-card">
-                            <h3>Calendrier Islamique</h3>
-                            <p>Suivez les dates importantes du calendrier hijri et les événements islamiques.</p>
-                            <a href="#" class="btn">Voir le calendrier</a>
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-compass fa-2x"></i>
                         </div>
-                        
-                        <div class="resource-card">
-                            <h3>Zakat Calculator</h3>
-                            <p>Calculez facilement votre zakat avec notre outil dédié.</p>
-                            <a href="#" class="btn">Calculer</a>
-                        </div>
-                        
-                        <div class="resource-card">
-                            <h3>Localisation Mosquées</h3>
-                            <p>Trouvez les mosquées les plus proches de votre position.</p>
-                            <a href="#" class="btn">Localiser</a>
-                        </div>
-                        
-                        <div class="resource-card">
-                            <h3>Questions/Réponses</h3>
-                            <p>Posez vos questions à nos savants et imams certifiés.</p>
-                            <a href="#" class="btn">Poser une question</a>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Direction de la Qibla</h3>
+                            <p>Trouvez facilement la direction de la Kaaba depuis n'importe où dans le monde.</p>
+                            <button class="btn" onclick="showSection('qibla')">
+                                <i class="fas fa-location-arrow"></i> Localiser
+                            </button>
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
-    </main>
-    
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Trésors Islamiques</h3>
-                    <p>Votre plateforme complète pour l'apprentissage et la pratique de l'Islam selon le Coran et la Sunna.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                
+                <div style="text-align: center; margin: 40px 0;">
+                    <h3 style="color: var(--primary-green); margin-bottom: 20px;">Rappel du Jour</h3>
+                    <div id="daily-reminder" style="background: var(--light-gold); padding: 30px; border-radius: 15px; font-style: italic; font-size: 1.2rem;">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Liens Rapides</h3>
-                    <ul>
-                        <li><a href="#rappels">Rappels Islamiques</a></li>
-                        <li><a href="#coran">Coran en Ligne</a></li>
-                        <li><a href="#hadith">Recueil de Hadiths</a></li>
-                        <li><a href="#ressources">Ressources</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Informations</h3>
-                    <ul>
-                        <li><a href="#">À propos</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Politique de confidentialité</a></li>
-                        <li><a href="#">Conditions d'utilisation</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Newsletter</h3>
-                    <p>Abonnez-vous pour recevoir les rappels hebdomadaires.</p>
-                    <form>
-                        <input type="email" placeholder="Votre email" required>
-                        <button type="submit" class="btn">S'abonner</button>
-                    </form>
                 </div>
             </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 Trésors Islamiques. Tous droits réservés.</p>
+        </section>
+
+        <!-- Quran Section -->
+        <section id="quran" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-book-quran"></i> القرآن الكريم - Le Saint Coran</h2>
+                <p>Lisez et écoutez la parole d'Allah</p>
             </div>
-        </div>
-    </footer>
-    
+            <div class="section-content">
+                <div class="controls">
+                    <button class="btn" onclick="loadRandomVerse()">
+                        <i class="fas fa-random"></i> Verset Aléatoire
+                    </button>
+                    <button class="btn btn-gold" onclick="toggleRecitation()">
+                        <i class="fas fa-play" id="play-icon"></i> Récitation
+                    </button>
+                </div>
+                
+                <div class="audio-player" id="audio-player" style="display: none;">
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="toggleRecitation()">
+                            <i class="fas fa-play" id="audio-play-icon"></i>
+                        </button>
+                        <button class="audio-btn" onclick="stopRecitation()">
+                            <i class="fas fa-stop"></i>
+                        </button>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; margin-bottom: 5px;" id="audio-title">Récitation en cours...</div>
+                        <audio id="quran-audio" style="width: 100%;"></audio>
+                    </div>
+                </div>
+                
+                <div class="quran-container">
+                    <div class="surah-list" id="surah-list">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                    <div class="quran-reader" id="quran-reader">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hadith Section -->
+        <section id="hadith" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-quote-right"></i> الأحاديث النبوية - Hadiths du Prophète ﷺ</h2>
+                <p>Sagesse et guidance du Messager d'Allah</p>
+            </div>
+            <div class="section-content">
+                <div class="controls">
+                    <button class="btn" onclick="loadHadiths('bukhari')">
+                        <i class="fas fa-book"></i> Sahih Bukhari
+                    </button>
+                    <button class="btn" onclick="loadHadiths('muslim')">
+                        <i class="fas fa-book"></i> Sahih Muslim
+                    </button>
+                    <button class="btn" onclick="loadHadiths('abudawud')">
+                        <i class="fas fa-book"></i> Abu Dawud
+                    </button>
+                    <button class="btn btn-gold" onclick="loadRandomHadith()">
+                        <i class="fas fa-random"></i> Hadith Aléatoire
+                    </button>
+                </div>
+                
+                <div class="hadith-container" id="hadith-container">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prayer Times Section -->
+        <section id="prayer" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-pray"></i> أوقات الصلاة - Horaires de Prière</h2>
+                <p>Les cinq prières quotidiennes</p>
+            </div>
+            <div class="section-content">
+                <div class="location-input">
+                    <input type="text" id="city-input" placeholder="Votre ville (ex: Paris, France)" value="Paris">
+                    <button class="btn" onclick="loadPrayerTimes()">
+                        <i class="fas fa-search"></i> Rechercher
+                    </button>
+                    <button class="btn btn-gold" onclick="getCurrentLocation()">
+                        <i class="fas fa-location-crosshairs"></i> Ma Position
+                    </button>
+                </div>
+                
+                <div id="current-location" style="text-align: center; margin: 20px 0; font-size: 1.2rem; color: var(--primary-green);"></div>
+                
+                <div class="prayer-times-grid" id="prayer-times">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                    <div id="next-prayer" style="background: var(--dark-blue); color: white; padding: 20px; border-radius: 15px; font-size: 1.3rem;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Qibla Direction Section -->
+        <section id="qibla" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-compass"></i> اتجاه القبلة - Direction de la Qibla</h2>
+                <p>Trouvez la direction de la Kaaba</p>
+            </div>
+            <div class="section-content">
+                <div class="location-input">
+                    <input type="text" id="qibla-city-input" placeholder="Votre ville" value="Paris">
+                    <button class="btn" onclick="calculateQibla()">
+                        <i class="fas fa-calculator"></i> Calculer
+                    </button>
+                    <button class="btn btn-gold" onclick="getQiblaCurrentLocation()">
+                        <i class="fas fa-crosshairs"></i> Ma Position
+                    </button>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div class="qibla-compass">
+                        <div class="compass-needle" id="compass-needle"></div>
+                        <div style="color: white; font-weight: bold; z-index: 10; position: relative;">
+                            <i class="fas fa-kaaba" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                    <div id="qibla-info" style="margin: 20px 0; font-size: 1.2rem; color: var(--primary-green);"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Islamic Calendar Section -->
+        <section id="calendar" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-calendar-islamic"></i> التقويم الهجري - Calendrier Islamique</h2>
+                <p>Dates importantes et événements islamiques</p>
+            </div>
+            <div class="section-content">
+                <div class="calendar-container">
+                    <div class="islamic-date" id="islamic-date">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="resource-header">
+                                <i class="fas fa-star-and-crescent fa-2x"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h3 class="resource-title">Ramadan 2025</h3>
+                                <p>Mois béni du jeûne et de la spiritualité. Dates approximatives: Mars-Avril 2025</p>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-header">
+                                <i class="fas fa-kaaba fa-2x"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h3 class="resource-title">Hajj 2025</h3>
+                                <p>Pèlerinage à La Mecque. Dates approximatives: Juin 2025</p>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-header">
+                                <i class="fas fa-moon fa-2x"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h3 class="resource-title">Muharram 1447</h3>
+                                <p>Nouvel an islamique et mois sacré</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-book-open"></i> الموارد الإسلامية - Ressources Islamiques</h2>
+                <p>Apprentissage et développement spirituel</p>
+            </div>
+            <div class="section-content">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-graduation-cap fa-2x"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Apprendre l'Arabe</h3>
+                            <p>Ressources pour apprendre la langue du Coran et enrichir votre compréhension spirituelle.</p>
+                            <button class="btn" onclick="openExternalLink('https://www.duolingo.com/course/ar/en/Learn-Arabic')">
+                                <i class="fas fa-external-link-alt"></i> Commencer
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-hands-praying fa-2x"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Invocations (Du'a)</h3>
+                            <p>Collection d'invocations authentiques pour différentes occasions de la vie.</p>
+                            <button class="btn" onclick="loadDuas()">
+                                <i class="fas fa-heart"></i> Voir les Du'a
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-user-graduate fa-2x"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Biographie du Prophète ﷺ</h3>
+                            <p>Découvrez la vie exemplaire du Prophète Muhammad (que la paix soit sur lui).</p>
+                            <button class="btn" onclick="loadSeerah()">
+                                <i class="fas fa-user"></i> Lire la Seerah
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-mosque fa-2x"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Trouver une Mosquée</h3>
+                            <p>Localisez les mosquées près de chez vous pour la prière en communauté.</p>
+                            <button class="btn" onclick="findMosques()">
+                                <i class="fas fa-map-marker-alt"></i> Localiser
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-book-reader fa-2x"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Tafsir (Exégèse)</h3>
+                            <p>Commentaires et explications du Coran par les savants reconnus.</p>
+                            <button class="btn" onclick="loadTafsir()">
+                                <i class="fas fa-search"></i> Explorer le Tafsir
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-header">
+                            <i class="fas fa-calendar-week fa-2x"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3 class="resource-title">Planning Spirituel</h3>
+                            <p>Organisez vos activités spirituelles quotidiennes et hebdomadaires.</p>
+                            <button class="btn" onclick="createSpiritualPlan()">
+                                <i class="fas fa-calendar-plus"></i> Créer un plan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
     <script>
-        // Simple script to update prayer times (would be connected to an API in production)
-        function updatePrayerTimes() {
-            // This would fetch real prayer times from an API
-            console.log("Updating prayer times...");
+        // Global variables
+        let currentAudio = null;
+        let isPlaying = false;
+        let currentSurah = null;
+        let surahs = [];
+        let prayerTimesData = null;
+
+        // Show message function
+        function showMessage(text, type = 'success') {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type} show`;
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 5000);
         }
-        
-        // Highlight current prayer time
-        function highlightCurrentPrayer() {
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const currentTime = hours * 60 + minutes;
-            
-            // Sample prayer times in minutes since midnight
-            const prayerTimes = {
-                fajr: 5 * 60 + 12,
-                dhuhr: 12 * 60 + 45,
-                asr: 16 * 60 + 20,
-                maghrib: 19 * 60 + 5,
-                isha: 20 * 60 + 30
-            };
-            
-            // Determine current prayer period
-            let currentPrayer = null;
-            
-            if (currentTime >= prayerTimes.isha || currentTime < prayerTimes.fajr) {
-                currentPrayer = 'isha';
-            } else if (currentTime >= prayerTimes.maghrib) {
-                currentPrayer = 'maghrib';
-            } else if (currentTime >= prayerTimes.asr) {
-                currentPrayer = 'asr';
-            } else if (currentTime >= prayerTimes.dhuhr) {
-                currentPrayer = 'dhuhr';
-            } else {
-                currentPrayer = 'fajr';
-            }
-            
-            // Remove active class from all prayers
-            document.querySelectorAll('.prayer-time').forEach(el => {
-                el.classList.remove('active');
+
+        // Section navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
             });
             
-            // Add active class to current prayer
-            const currentPrayerEl = document.querySelector(`.prayer-time p:first-child`);
-            if (currentPrayerEl && currentPrayerEl.textContent.toLowerCase() === currentPrayer) {
-                currentPrayerEl.parentElement.classList.add('active');
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Load section data if needed
+            if (sectionId === 'quran' && surahs.length === 0) {
+                loadSurahs();
+            } else if (sectionId === 'hadith') {
+                loadHadiths('bukhari');
+            } else if (sectionId === 'prayer') {
+                loadPrayerTimes();
+            } else if (sectionId === 'calendar') {
+                loadIslamicDate();
+            } else if (sectionId === 'home') {
+                loadDailyReminder();
             }
         }
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updatePrayerTimes();
-            highlightCurrentPrayer();
+
+        // Load daily reminder
+        async function loadDailyReminder() {
+            try {
+                const reminders = [
+                    "« Et rappelle, car le rappel profite aux croyants. » - Coran 51:55",
+                    "« Ô vous qui croyez! Invoquez souvent Allah et glorifiez-Le matin et soir. » - Coran 33:41",
+                    "« Celui qui se rappelle son Seigneur et celui qui ne s'en rappelle pas sont comme le vivant et le mort. » - Hadith",
+                    "« La meilleure invocation est celle du jour d'Arafat. » - Hadith",
+                    "« Allah est plus miséricordieux envers Ses serviteurs qu'une mère envers son enfant. » - Hadith",
+                    "« Recherchez la science du berceau jusqu'au tombeau. » - Hadith",
+                    "« Les croyants les plus parfaits en foi sont ceux qui ont le meilleur caractère. » - Hadith"
+                ];
+                
+                const randomReminder = reminders[Math.floor(Math.random() * reminders.length)];
+                document.getElementById('daily-reminder').innerHTML = `
+                    <i class="fas fa-quote-left" style="color: var(--gold); margin-right: 10px;"></i>
+                    ${randomReminder}
+                    <i class="fas fa-quote-right" style="color: var(--gold); margin-left: 10px;"></i>
+                `;
+            } catch (error) {
+                document.getElementById('daily-reminder').innerHTML = `
+                    <i class="fas fa-quote-left" style="color: var(--gold); margin-right: 10px;"></i>
+                    « Et rappelle, car le rappel profite aux croyants. » - Coran 51:55
+                    <i class="fas fa-quote-right" style="color: var(--gold); margin-left: 10px;"></i>
+                `;
+            }
+        }
+
+        // Load Surahs
+        async function loadSurahs() {
+            try {
+                const response = await fetch('https://api.alquran.cloud/v1/surah');
+                const data = await response.json();
+                
+                if (data.status === 'OK') {
+                    surahs = data.data;
+                    displaySurahs();
+                    loadSurah(1); // Load Al-Fatiha by default
+                } else {
+                    throw new Error('Failed to load surahs');
+                }
+            } catch (error) {
+                showMessage('Erreur lors du chargement des sourates: ' + error.message, 'error');
+                document.getElementById('surah-list').innerHTML = `
+                    <div style="text-align: center; color: var(--primary-green);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Impossible de charger les sourates. Veuillez vérifier votre connexion internet.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Display Surahs
+        function displaySurahs() {
+            const surahList = document.getElementById('surah-list');
+            surahList.innerHTML = surahs.map(surah => `
+                <div class="surah-item ${surah.number === 1 ? 'active' : ''}" onclick="loadSurah(${surah.number})">
+                    <div style="font-weight: bold; color: var(--primary-green);">${surah.number}. ${surah.name}</div>
+                    <div class="arabic-text" style="font-size: 1.2rem; margin: 5px 0;">${surah.englishName}</div>
+                    <div style="font-size: 0.9rem; color: #666;">${surah.englishNameTranslation} - ${surah.numberOfAyahs} versets</div>
+                </div>
+            `).join('');
+        }
+
+        // Load specific Surah
+        async function loadSurah(surahNumber) {
+            try {
+                // Update active surah in list
+                document.querySelectorAll('.surah-item').forEach(item => item.classList.remove('active'));
+                event?.target?.closest('.surah-item')?.classList.add('active');
+                
+                currentSurah = surahNumber;
+                
+                // Show loading
+                document.getElementById('quran-reader').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // Load Arabic text
+                const arabicResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
+                const arabicData = await arabicResponse.json();
+                
+                // Load French translation
+                const frenchResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/fr.hamidullah`);
+                const frenchData = await frenchResponse.json();
+                
+                if (arabicData.status === 'OK' && frenchData.status === 'OK') {
+                    displaySurah(arabicData.data, frenchData.data);
+                } else {
+                    throw new Error('Failed to load surah content');
+                }
+            } catch (error) {
+                showMessage('Erreur lors du chargement de la sourate: ' + error.message, 'error');
+                document.getElementById('quran-reader').innerHTML = `
+                    <div style="text-align: center; color: var(--primary-green);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Impossible de charger cette sourate.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Display Surah content
+        function displaySurah(arabicSurah, frenchSurah) {
+            const reader = document.getElementById('quran-reader');
             
-            // Update every minute
-            setInterval(highlightCurrentPrayer, 60000);
+            let html = `
+                <div style="text-align: center; margin-bottom: 30px; padding: 20px; background: var(--light-gold); border-radius: 15px;">
+                    <h3 class="arabic-text" style="font-size: 2rem; color: var(--primary-green); margin-bottom: 10px;">
+                        ${arabicSurah.name}
+                    </h3>
+                    <h4 style="color: var(--dark-blue); margin-bottom: 5px;">${arabicSurah.englishName}</h4>
+                    <p style="color: #666;">${arabicSurah.englishNameTranslation} - ${arabicSurah.numberOfAyahs} versets</p>
+                </div>
+            `;
+            
+            // Add Bismillah for all surahs except Al-Fatiha and At-Tawbah
+            if (arabicSurah.number !== 1 && arabicSurah.number !== 9) {
+                html += `
+                    <div class="verse" style="text-align: center; background: var(--cream);">
+                        <div class="verse-arabic" style="font-size: 2rem;">
+                            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                        </div>
+                        <div class="verse-translation">
+                            Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux
+                        </div>
+                    </div>
+                `;
+            }
+            
+            arabicSurah.ayahs.forEach((ayah, index) => {
+                const frenchAyah = frenchSurah.ayahs[index];
+                html += `
+                    <div class="verse">
+                        <div class="verse-number">${ayah.numberInSurah}</div>
+                        <div class="verse-arabic">${ayah.text}</div>
+                        <div class="verse-translation">${frenchAyah ? frenchAyah.text : ''}</div>
+                    </div>
+                `;
+            });
+            
+            reader.innerHTML = html;
+        }
+
+        // Load random verse
+        async function loadRandomVerse() {
+            try {
+                const randomSurah = Math.floor(Math.random() * 114) + 1;
+                const response = await fetch(`https://api.alquran.cloud/v1/surah/${randomSurah}`);
+                const data = await response.json();
+                
+                if (data.status === 'OK') {
+                    const randomAyah = data.data.ayahs[Math.floor(Math.random() * data.data.ayahs.length)];
+                    
+                    // Get French translation
+                    const frenchResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyah.number}/fr.hamidullah`);
+                    const frenchData = await frenchResponse.json();
+                    
+                    const reader = document.getElementById('quran-reader');
+                    reader.innerHTML = `
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <h3 style="color: var(--primary-green);">Verset Aléatoire</h3>
+                            <p style="color: #666;">Sourate ${data.data.name} (${data.data.englishName}) - Verset ${randomAyah.numberInSurah}</p>
+                        </div>
+                        <div class="verse" style="background: var(--light-gold);">
+                            <div class="verse-number">${randomAyah.numberInSurah}</div>
+                            <div class="verse-arabic">${randomAyah.text}</div>
+                            <div class="verse-translation">${frenchData.status === 'OK' ? frenchData.data.text : ''}</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                showMessage('Erreur lors du chargement du verset aléatoire: ' + error.message, 'error');
+            }
+        }
+
+        // Audio functionality
+        async function toggleRecitation() {
+            if (!currentSurah) {
+                showMessage('Veuillez d\'abord sélectionner une sourate', 'error');
+                return;
+            }
+            
+            if (isPlaying) {
+                stopRecitation();
+                return;
+            }
+            
+            try {
+                const audioPlayer = document.getElementById('audio-player');
+                const audio = document.getElementById('quran-audio');
+                const playIcon = document.getElementById('play-icon');
+                const audioPlayIcon = document.getElementById('audio-play-icon');
+                
+                // Show audio player
+                audioPlayer.style.display = 'flex';
+                
+                // Set audio source (using Mishary Rashid Al-Afasy recitation)
+                const paddedSurahNumber = currentSurah.toString().padStart(3, '0');
+                audio.src = `https://server8.mp3quran.net/afs/${paddedSurahNumber}.mp3`;
+                
+                // Update title
+                const surah = surahs.find(s => s.number === currentSurah);
+                document.getElementById('audio-title').textContent = `Récitation: ${surah ? surah.englishName : 'Sourate ' + currentSurah}`;
+                
+                // Play audio
+                await audio.play();
+                isPlaying = true;
+                
+                // Update icons
+                playIcon.className = 'fas fa-pause';
+                audioPlayIcon.className = 'fas fa-pause';
+                
+                // Handle audio end
+                audio.onended = () => {
+                    stopRecitation();
+                };
+                
+                showMessage('Récitation commencée');
+                
+            } catch (error) {
+                showMessage('Erreur lors de la lecture audio: ' + error.message, 'error');
+                stopRecitation();
+            }
+        }
+
+        function stopRecitation() {
+            const audio = document.getElementById('quran-audio');
+            const playIcon = document.getElementById('play-icon');
+            const audioPlayIcon = document.getElementById('audio-play-icon');
+            
+            audio.pause();
+            audio.currentTime = 0;
+            isPlaying = false;
+            
+            // Update icons
+            playIcon.className = 'fas fa-play';
+            audioPlayIcon.className = 'fas fa-play';
+            
+            // Hide audio player
+            document.getElementById('audio-player').style.display = 'none';
+        }
+
+        // Load Hadiths
+        async function loadHadiths(collection) {
+            try {
+                document.getElementById('hadith-container').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // Using a different API approach with predefined hadiths
+                const hadithsData = {
+                    bukhari: [
+                        {
+                            text: "Les actions ne valent que par les intentions et chacun n'aura que ce qu'il a eu l'intention de faire.",
+                            reference: "Sahih Bukhari, Livre 1, Hadith 1"
+                        },
+                        {
+                            text: "Celui qui croit en Allah et au Jour dernier, qu'il dise du bien ou qu'il se taise.",
+                            reference: "Sahih Bukhari, Livre 78, Hadith 158"
+                        },
+                        {
+                            text: "Le croyant n'est pas celui qui mange à sa faim tandis que son voisin a faim.",
+                            reference: "Sahih Bukhari"
+                        },
+                        {
+                            text: "Facilitez les choses aux gens et ne les leur rendez pas difficiles, annoncez-leur de bonnes nouvelles et ne les faites pas fuir.",
+                            reference: "Sahih Bukhari, Livre 3, Hadith 69"
+                        },
+                        {
+                            text: "Celui qui n'est pas reconnaissant envers les gens n'est pas reconnaissant envers Allah.",
+                            reference: "Sahih Bukhari"
+                        }
+                    ],
+                    muslim: [
+                        {
+                            text: "La foi comporte soixante-dix et quelques branches. La plus élevée est l'attestation qu'il n'y a de divinité qu'Allah, et la plus modeste consiste à écarter de la route ce qui peut nuire aux passants.",
+                            reference: "Sahih Muslim, Livre 1, Hadith 63"
+                        },
+                        {
+                            text: "Celui qui indique le chemin du bien aura la même récompense que celui qui l'accomplit.",
+                            reference: "Sahih Muslim"
+                        },
+                        {
+                            text: "Allah a prescrit la bienfaisance en toute chose.",
+                            reference: "Sahih Muslim, Livre 21, Hadith 4810"
+                        },
+                        {
+                            text: "Un homme qui donne de l'eau à boire à un chien assoiffé sera récompensé par Allah.",
+                            reference: "Sahih Muslim"
+                        },
+                        {
+                            text: "La pudeur fait partie de la foi.",
+                            reference: "Sahih Muslim, Livre 1, Hadith 60"
+                        }
+                    ],
+                    abudawud: [
+                        {
+                            text: "Celui qui se tait est sauvé.",
+                            reference: "Sunan Abu Dawud"
+                        },
+                        {
+                            text: "Le meilleur des gens est celui qui est le plus utile aux autres.",
+                            reference: "Sunan Abu Dawud"
+                        },
+                        {
+                            text: "Recherchez la science du berceau jusqu'au tombeau.",
+                            reference: "Sunan Abu Dawud"
+                        },
+                        {
+                            text: "Allah aime, quand l'un de vous fait un travail, qu'il le fasse avec excellence.",
+                            reference: "Sunan Abu Dawud"
+                        },
+                        {
+                            text: "Celui qui ne fait pas miséricorde ne recevra pas de miséricorde.",
+                            reference: "Sunan Abu Dawud"
+                        }
+                    ]
+                };
+                
+                const hadiths = hadithsData[collection] || hadithsData.bukhari;
+                displayHadiths(hadiths);
+                
+            } catch (error) {
+                showMessage('Erreur lors du chargement des hadiths: ' + error.message, 'error');
+                document.getElementById('hadith-container').innerHTML = `
+                    <div style="text-align: center; color: var(--primary-green);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Impossible de charger les hadiths.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayHadiths(hadiths) {
+            const container = document.getElementById('hadith-container');
+            container.innerHTML = hadiths.map(hadith => `
+                <div class="hadith-item">
+                    <div class="hadith-text">${hadith.text}</div>
+                    <div class="hadith-reference">— ${hadith.reference}</div>
+                </div>
+            `).join('');
+        }
+
+        function loadRandomHadith() {
+            const allHadiths = [
+                { text: "Les actions ne valent que par les intentions.", reference: "Sahih Bukhari" },
+                { text: "Souris à ton frère, c'est une aumône.", reference: "Sahih Muslim" },
+                { text: "Le meilleur des gens est celui qui est le plus utile aux autres.", reference: "Sunan Abu Dawud" },
+                { text: "Celui qui croit en Allah et au Jour dernier, qu'il dise du bien ou qu'il se taise.", reference: "Sahih Bukhari" },
+                { text: "La pudeur fait partie de la foi.", reference: "Sahih Muslim" }
+            ];
+            
+            const randomHadith = allHadiths[Math.floor(Math.random() * allHadiths.length)];
+            displayHadiths([randomHadith]);
+        }
+
+        // Prayer Times
+        async function loadPrayerTimes() {
+            const city = document.getElementById('city-input').value || 'Paris';
+            
+            try {
+                document.getElementById('prayer-times').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // Get coordinates for the city
+                const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${getWeatherApiKey()}`);
+                const geoData = await geoResponse.json();
+                
+                if (geoData.length === 0) {
+                    throw new Error('Ville non trouvée');
+                }
+                
+                const { lat, lon, name, country } = geoData[0];
+                document.getElementById('current-location').textContent = `📍 ${name}, ${country}`;
+                
+                // Get prayer times
+                const today = new Date();
+                const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+                
+                const prayerResponse = await fetch(`https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lon}&method=2`);
+                const prayerData = await prayerResponse.json();
+                
+                if (prayerData.code === 200) {
+                    prayerTimesData = prayerData.data.timings;
+                    displayPrayerTimes(prayerTimesData);
+                    updateNextPrayer();
+                } else {
+                    throw new Error('Impossible de récupérer les horaires de prière');
+                }
+                
+            } catch (error) {
+                showMessage('Erreur: ' + error.message, 'error');
+                document.getElementById('prayer-times').innerHTML = `
+                    <div style="text-align: center; color: var(--primary-green); grid-column: 1 / -1;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Impossible de charger les horaires de prière pour cette ville.</p>
+                        <p>Veuillez vérifier le nom de la ville et votre connexion internet.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function getWeatherApiKey() {
+            // Using a demo key - in production, this should be from environment variables
+            return '8d2de98e089f1c28e1a22fc19a24ef04'; // Demo key, may have limitations
+        }
+
+        function displayPrayerTimes(times) {
+            const prayerNames = {
+                Fajr: { name: 'Fajr', icon: 'fas fa-sun', arabic: 'الفجر' },
+                Dhuhr: { name: 'Dhohr', icon: 'fas fa-sun', arabic: 'الظهر' },
+                Asr: { name: 'Asr', icon: 'fas fa-cloud-sun', arabic: 'العصر' },
+                Maghrib: { name: 'Maghrib', icon: 'fas fa-moon', arabic: 'المغرب' },
+                Isha: { name: 'Isha', icon: 'fas fa-moon', arabic: 'العشاء' }
+            };
+            
+            const container = document.getElementById('prayer-times');
+            container.innerHTML = Object.entries(prayerNames).map(([key, prayer]) => `
+                <div class="prayer-time-card">
+                    <div class="prayer-name">
+                        <i class="${prayer.icon}"></i>
+                        ${prayer.name}
+                        <div class="arabic-text" style="font-size: 1rem; margin-top: 5px;">${prayer.arabic}</div>
+                    </div>
+                    <div class="prayer-time">${times[key]}</div>
+                </div>
+            `).join('');
+        }
+
+        function updateNextPrayer() {
+            if (!prayerTimesData) return;
+            
+            const now = new Date();
+            const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            const prayers = [
+                { name: 'Fajr', time: prayerTimesData.Fajr, arabic: 'الفجر' },
+                { name: 'Dhohr', time: prayerTimesData.Dhuhr, arabic: 'الظهر' },
+                { name: 'Asr', time: prayerTimesData.Asr, arabic: 'العصر' },
+                { name: 'Maghrib', time: prayerTimesData.Maghrib, arabic: 'المغرب' },
+                { name: 'Isha', time: prayerTimesData.Isha, arabic: 'العشاء' }
+            ];
+            
+            let nextPrayer = null;
+            for (const prayer of prayers) {
+                if (prayer.time > currentTime) {
+                    nextPrayer = prayer;
+                    break;
+                }
+            }
+            
+            // If no prayer found today, next is Fajr tomorrow
+            if (!nextPrayer) {
+                nextPrayer = prayers[0];
+            }
+            
+            document.getElementById('next-prayer').innerHTML = `
+                <i class="fas fa-clock"></i>
+                Prochaine prière: <strong>${nextPrayer.name}</strong> (${nextPrayer.arabic}) à <strong>${nextPrayer.time}</strong>
+            `;
+        }
+
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        try {
+                            const { latitude, longitude } = position.coords;
+                            
+                            // Get city name from coordinates
+                            const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${getWeatherApiKey()}`);
+                            const geoData = await geoResponse.json();
+                            
+                            if (geoData.length > 0) {
+                                const cityName = `${geoData[0].name}, ${geoData[0].country}`;
+                                document.getElementById('city-input').value = cityName;
+                                loadPrayerTimes();
+                            } else {
+                                // Use coordinates directly
+                                loadPrayerTimesFromCoords(latitude, longitude);
+                            }
+                        } catch (error) {
+                            showMessage('Erreur lors de la géolocalisation: ' + error.message, 'error');
+                        }
+                    },
+                    (error) => {
+                        showMessage('Impossible d\'accéder à votre position. Veuillez autoriser la géolocalisation.', 'error');
+                    }
+                );
+            } else {
+                showMessage('La géolocalisation n\'est pas supportée par votre navigateur.', 'error');
+            }
+        }
+
+        async function loadPrayerTimesFromCoords(lat, lon) {
+            try {
+                document.getElementById('prayer-times').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                document.getElementById('current-location').textContent = `📍 Position actuelle (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
+                
+                const today = new Date();
+                const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+                
+                const prayerResponse = await fetch(`https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lon}&method=2`);
+                const prayerData = await prayerResponse.json();
+                
+                if (prayerData.code === 200) {
+                    prayerTimesData = prayerData.data.timings;
+                    displayPrayerTimes(prayerTimesData);
+                    updateNextPrayer();
+                } else {
+                    throw new Error('Impossible de récupérer les horaires de prière');
+                }
+                
+            } catch (error) {
+                showMessage('Erreur: ' + error.message, 'error');
+            }
+        }
+
+        // Qibla Direction
+        function calculateQibla() {
+            const city = document.getElementById('qibla-city-input').value || 'Paris';
+            
+            // This is a simplified calculation - for production, use precise coordinates
+            const qiblaDirections = {
+                'paris': 119,
+                'london': 118,
+                'new york': 58,
+                'tokyo': 293,
+                'sydney': 277,
+                'cairo': 135,
+                'istanbul': 147,
+                'karachi': 255,
+                'jakarta': 295,
+                'kuala lumpur': 292
+            };
+            
+            const cityLower = city.toLowerCase();
+            let direction = qiblaDirections[cityLower] || 119; // Default to Paris direction
+            
+            // Find closest match
+            if (!qiblaDirections[cityLower]) {
+                for (const [qiblaCity, dir] of Object.entries(qiblaDirections)) {
+                    if (cityLower.includes(qiblaCity) || qiblaCity.includes(cityLower)) {
+                        direction = dir;
+                        break;
+                    }
+                }
+            }
+            
+            document.getElementById('compass-needle').style.transform = `rotate(${direction}deg)`;
+            document.getElementById('qibla-info').innerHTML = `
+                <i class="fas fa-kaaba"></i>
+                Direction de la Qibla depuis ${city}: <strong>${direction}°</strong> depuis le Nord
+                <br>
+                <small style="color: #666;">Tournez-vous vers cette direction pour la prière</small>
+            `;
+            
+            showMessage(`Direction de la Qibla calculée pour ${city}`);
+        }
+
+        function getQiblaCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        
+                        // Calculate Qibla direction using Kaaba coordinates (21.4225, 39.8262)
+                        const kaabaLat = 21.4225;
+                        const kaabaLon = 39.8262;
+                        
+                        const direction = calculateQiblaDirection(latitude, longitude, kaabaLat, kaabaLon);
+                        
+                        document.getElementById('compass-needle').style.transform = `rotate(${direction}deg)`;
+                        document.getElementById('qibla-info').innerHTML = `
+                            <i class="fas fa-kaaba"></i>
+                            Direction de la Qibla depuis votre position: <strong>${Math.round(direction)}°</strong>
+                            <br>
+                            <small style="color: #666;">Position: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}</small>
+                        `;
+                        
+                        showMessage('Direction de la Qibla calculée depuis votre position');
+                    },
+                    (error) => {
+                        showMessage('Impossible d\'accéder à votre position pour calculer la Qibla.', 'error');
+                    }
+                );
+            } else {
+                showMessage('La géolocalisation n\'est pas supportée par votre navigateur.', 'error');
+            }
+        }
+
+        function calculateQiblaDirection(lat1, lon1, lat2, lon2) {
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const lat1Rad = lat1 * Math.PI / 180;
+            const lat2Rad = lat2 * Math.PI / 180;
+            
+            const y = Math.sin(dLon) * Math.cos(lat2Rad);
+            const x = Math.cos(lat1Rad) * Math.sin(lat2Rad) - Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLon);
+            
+            let bearing = Math.atan2(y, x) * 180 / Math.PI;
+            bearing = (bearing + 360) % 360;
+            
+            return bearing;
+        }
+
+        // Islamic Calendar
+        async function loadIslamicDate() {
+            try {
+                const today = new Date();
+                const response = await fetch(`https://api.aladhan.com/v1/gToH/${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`);
+                const data = await response.json();
+                
+                if (data.code === 200) {
+                    const hijriDate = data.data.hijri;
+                    document.getElementById('islamic-date').innerHTML = `
+                        <div style="font-size: 2rem; margin-bottom: 10px;" class="arabic-text">
+                            ${hijriDate.day} ${hijriDate.month.ar} ${hijriDate.year}
+                        </div>
+                        <div style="font-size: 1.2rem; color: var(--dark-blue);">
+                            ${hijriDate.day} ${hijriDate.month.en} ${hijriDate.year} H
+                        </div>
+                        <div style="font-size: 1rem; margin-top: 10px; color: #666;">
+                            Correspondant au ${today.toLocaleDateString('fr-FR', { 
+                                weekday: 'long', 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            })}
+                        </div>
+                        <div style="margin-top: 15px; color: var(--primary-green);">
+                            <strong>Jour de la semaine:</strong> ${hijriDate.weekday.ar} / ${hijriDate.weekday.en}
+                        </div>
+                    `;
+                } else {
+                    throw new Error('Failed to load Islamic date');
+                }
+            } catch (error) {
+                document.getElementById('islamic-date').innerHTML = `
+                    <div style="color: var(--primary-green);">
+                        <i class="fas fa-calendar-islamic fa-2x"></i>
+                        <p>Calendrier Islamique</p>
+                        <p style="color: #666; font-size: 0.9rem;">Impossible de charger la date hijri actuelle</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Resources Functions
+        function openExternalLink(url) {
+            window.open(url, '_blank');
+        }
+
+        function loadDuas() {
+            const duas = [
+                {
+                    title: "Du'a du matin",
+                    arabic: "اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ",
+                    translation: "Ô Allah, c'est par Toi que nous entrons dans la matinée, c'est par Toi que nous entrons dans la soirée, c'est par Toi que nous vivons, c'est par Toi que nous mourrons et c'est vers Toi la résurrection."
+                },
+                {
+                    title: "Du'a avant de manger",
+                    arabic: "بِسْمِ اللَّهِ وَعَلَى بَرَكَةِ اللَّهِ",
+                    translation: "Au nom d'Allah et avec la bénédiction d'Allah."
+                },
+                {
+                    title: "Du'a après avoir mangé",
+                    arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ",
+                    translation: "Louange à Allah qui nous a nourris, nous a donné à boire et a fait de nous des musulmans."
+                }
+            ];
+            
+            showDuasModal(duas);
+        }
+
+        function showDuasModal(duas) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 2000; display: flex; 
+                align-items: center; justify-content: center; padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 20px; max-width: 800px; max-height: 80vh; overflow-y: auto; position: relative;">
+                    <div style="background: var(--primary-green); color: white; padding: 20px; border-radius: 20px 20px 0 0;">
+                        <h2><i class="fas fa-hands-praying"></i> Invocations (Du'a)</h2>
+                        <button onclick="this.closest('.modal').remove()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">×</button>
+                    </div>
+                    <div style="padding: 30px;">
+                        ${duas.map(dua => `
+                            <div style="margin-bottom: 30px; padding: 20px; background: var(--light-blue); border-radius: 15px;">
+                                <h3 style="color: var(--primary-green); margin-bottom: 15px;">${dua.title}</h3>
+                                <div class="arabic-text" style="font-size: 1.5rem; line-height: 1.8; margin-bottom: 15px; color: var(--dark-blue);">
+                                    ${dua.arabic}
+                                </div>
+                                <div style="font-style: italic; color: var(--dark-text);">
+                                    ${dua.translation}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            modal.className = 'modal';
+            document.body.appendChild(modal);
+        }
+
+        function loadSeerah() {
+            const seerahContent = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="color: var(--primary-green);">La Seerah - Biographie du Prophète Muhammad ﷺ</h2>
+                </div>
+                <div style="background: var(--light-gold); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
+                    <h3 style="color: var(--primary-green);">La Naissance (570 après J.C.)</h3>
+                    <p>Muhammad ﷺ est né à La Mecque dans la tribu de Quraysh. Orphelin de père avant sa naissance et de mère à l'âge de 6 ans, il fut élevé par son grand-père puis par son oncle Abu Talib.</p>
+                </div>
+                <div style="background: var(--light-blue); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
+                    <h3 style="color: var(--primary-green);">La Révélation (610 après J.C.)</h3>
+                    <p>À l'âge de 40 ans, dans la grotte de Hira, l'ange Gabriel (Jibril) lui apparut pour la première fois avec la révélation du Coran, marquant le début de sa mission prophétique.</p>
+                </div>
+                <div style="background: var(--cream); padding: 25px; border-radius: 15px; margin-bottom: 20px;">
+                    <h3 style="color: var(--primary-green);">L'Hégire (622 après J.C.)</h3>
+                    <p>Face aux persécutions à La Mecque, le Prophète ﷺ émigra vers Médine avec ses compagnons. Cet événement marque le début du calendrier islamique.</p>
+                </div>
+                <div style="background: var(--light-gold); padding: 25px; border-radius: 15px;">
+                    <h3 style="color: var(--primary-green);">Son Caractère ﷺ</h3>
+                    <p>Il était connu pour sa sincérité (Al-Amin - le digne de confiance), sa miséricorde, sa justice et sa simplicité. Il disait : "J'ai été envoyé pour parfaire les nobles caractères."</p>
+                </div>
+            `;
+            
+            showContentModal("Biographie du Prophète ﷺ", seerahContent);
+        }
+
+        function showContentModal(title, content) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 2000; display: flex; 
+                align-items: center; justify-content: center; padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 20px; max-width: 900px; max-height: 80vh; overflow-y: auto; position: relative;">
+                    <div style="background: var(--primary-green); color: white; padding: 20px; border-radius: 20px 20px 0 0;">
+                        <h2><i class="fas fa-user-graduate"></i> ${title}</h2>
+                        <button onclick="this.closest('.modal').remove()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">×</button>
+                    </div>
+                    <div style="padding: 30px;">
+                        ${content}
+                    </div>
+                </div>
+            `;
+            
+            modal.className = 'modal';
+            document.body.appendChild(modal);
+        }
+
+        function findMosques() {
+            const mosquesContent = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="color: var(--primary-green);">Trouver une Mosquée</h2>
+                    <p>Voici quelques ressources pour trouver des mosquées près de chez vous :</p>
+                </div>
+                <div style="display: grid; gap: 20px;">
+                    <div style="background: var(--light-blue); padding: 20px; border-radius: 15px;">
+                        <h3 style="color: var(--primary-green);">🕌 Sites Web Utiles</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 10px 0;"><strong>Trouver-une-mosquee.com</strong> - Annuaire des mosquées en France</li>
+                            <li style="margin: 10px 0;"><strong>Google Maps</strong> - Recherchez "mosquée près de moi"</li>
+                            <li style="margin: 10px 0;"><strong>Muslim Pro App</strong> - Application mobile complète</li>
+                        </ul>
+                    </div>
+                    <div style="background: var(--light-gold); padding: 20px; border-radius: 15px;">
+                        <h3 style="color: var(--primary-green);">📍 Conseils de Recherche</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 10px 0;">✓ Vérifiez les horaires de prière de la mosquée</li>
+                            <li style="margin: 10px 0;">✓ Renseignez-vous sur les cours et activités</li>
+                            <li style="margin: 10px 0;">✓ Contactez la mosquée avant votre première visite</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            showContentModal("Trouver une Mosquée", mosquesContent);
+        }
+
+        function loadTafsir() {
+            const tafsirContent = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="color: var(--primary-green);">Tafsir - Exégèse du Coran</h2>
+                    <p>Commentaires et explications du Coran par les savants</p>
+                </div>
+                <div style="display: grid; gap: 20px;">
+                    <div style="background: var(--light-blue); padding: 20px; border-radius: 15px;">
+                        <h3 style="color: var(--primary-green);">📚 Tafsirs Recommandés</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 15px 0;"><strong>Tafsir Ibn Kathir</strong> - Exégèse classique et détaillée</li>
+                            <li style="margin: 15px 0;"><strong>Tafsir Al-Jalalayn</strong> - Commentaire concis et accessible</li>
+                            <li style="margin: 15px 0;"><strong>Tafsir Al-Qurtubi</strong> - Focus sur les règles juridiques</li>
+                            <li style="margin: 15px 0;"><strong>Tafsir As-Sa'di</strong> - Approche moderne et claire</li>
+                        </ul>
+                    </div>
+                    <div style="background: var(--light-gold); padding: 20px; border-radius: 15px;">
+                        <h3 style="color: var(--primary-green);">🌐 Ressources en Ligne</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 15px 0;">• <strong>Quran.com</strong> - Tafsir en plusieurs langues</li>
+                            <li style="margin: 15px 0;">• <strong>Islamweb.net</strong> - Ressources en français</li>
+                            <li style="margin: 15px 0;">• <strong>Al-Islam.org</strong> - Bibliothèque islamique</li>
+                        </ul>
+                    </div>
+                    <div style="background: var(--cream); padding: 20px; border-radius: 15px;">
+                        <h3 style="color: var(--primary-green);">💡 Conseils d'Étude</h3>
+                        <p>Commencez par des sourates courtes, lisez d'abord le verset en arabe, puis sa traduction, et enfin consultez le tafsir pour une compréhension approfondie.</p>
+                    </div>
+                </div>
+            `;
+            
+            showContentModal("Tafsir du Coran", tafsirContent);
+        }
+
+        function createSpiritualPlan() {
+            const planContent = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="color: var(--primary-green);">Planning Spirituel Quotidien</h2>
+                    <p>Organisez vos activités spirituelles</p>
+                </div>
+                <div style="display: grid; gap: 20px;">
+                    <div style="background: var(--light-blue); padding: 20px; border-radius: 15px;">
+                        <h3 style="color: var(--primary-green);">🌅 Matin (Après Fajr)</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 10px 0;">✓ Dhikr du matin (15 min)</li>
+                            <li style="margin: 10px 0;">✓ Lecture du Coran (20 min)</li>
+                            <li style="margin: 10px 0;">✓ Du'a et réflexion (10 min)</li>
+                        </ul>
+                    </div>
+                    <div style="background: var(--light-gold); padding: 20px; border-radius: 15px;">
+                        <h3 style="color: var(--primary-green);">☀️ Journée</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 10px 0;">✓ Prayers à l'heure (Dhohr, Asr)</li>
+                            <li style="margin: 10px 0;">✓ Istighfar régulier</li>
+                            <li style="margin: 10px 0;">✓ Comportement islamique</li>
+                        </ul>
+                    </div>
+                    <div style="background: var(--cream); padding: 20px; border-radius: 15px;">
+                        <h3 style="color: var(--primary-green);">🌙 Soir (Après Maghrib/Isha)</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 10px 0;">✓ Dhikr du soir (15 min)</li>
+                            <li style="margin: 10px 0;">✓ Lecture d'un hadith</li>
+                            <li style="margin: 10px 0;">✓ Examen de conscience</li>
+                            <li style="margin: 10px 0;">✓ Du'a avant de dormir</li>
+                        </ul>
+                    </div>
+                    <div style="background: var(--light-blue); padding: 20px; border-radius: 15px;">
+                        <h3 style="color: var(--primary-green);">📅 Hebdomadaire</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 10px 0;">• Vendredi : Prière du Jumu'ah</li>
+                            <li style="margin: 10px 0;">• Lecture d'une sourate complète</li>
+                            <li style="margin: 10px 0;">• Étude d'un sujet islamique</li>
+                            <li style="margin: 10px 0;">• Aumône et bonnes actions</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            showContentModal("Planning Spirituel", planContent);
+        }
+
+        // Initialize the application
+        window.addEventListener('load', function() {
+            loadDailyReminder();
+            
+            // Update prayer times every minute
+            setInterval(() => {
+                if (prayerTimesData) {
+                    updateNextPrayer();
+                }
+            }, 60000);
+            
+            // Load initial content
+            setTimeout(() => {
+                loadSurahs();
+            }, 1000);
+        });
+
+        // Handle page visibility change to update prayer times
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden && prayerTimesData) {
+                updateNextPrayer();
+            }
         });
     </script>
 </body>
