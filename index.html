@@ -753,7 +753,8 @@
                     </div>
 
                     <div class="mawaqit-search-box">
-                        <input type="text" id="mawaqit-search-input" placeholder="Ville ou nom de mosquée (ex: Paris, Lyon, Alger…)" value="Paris">
+                        <input type="text" id="mawaqit-search-input" placeholder="Ville ou nom de mosquée (ex: Nice, Lyon, Alger…)" value="Paris"
+                               onkeydown="if(event.key==='Enter') searchMawaqitMosques()">
                         <button class="btn" onclick="searchMawaqitMosques()"><i class="fas fa-search"></i> Rechercher</button>
                         <button class="btn btn-gold" onclick="mawaqitGPS()"><i class="fas fa-crosshairs"></i> Position GPS</button>
                     </div>
@@ -815,7 +816,8 @@
                     </div>
 
                     <div class="mawaqit-search-box">
-                        <input type="text" id="mawaqit-table-search-input" placeholder="Ville ou nom de mosquée…" value="Paris">
+                        <input type="text" id="mawaqit-table-search-input" placeholder="Ville ou nom de mosquée (ex: Nice, Lyon, Alger…)" value="Paris"
+                               onkeydown="if(event.key==='Enter') searchMawaqitMosquesTable()">
                         <button class="btn" onclick="searchMawaqitMosquesTable()"><i class="fas fa-search"></i> Rechercher</button>
                         <button class="btn btn-gold" onclick="mawaqitTableGPS()"><i class="fas fa-crosshairs"></i> Position GPS</button>
                     </div>
@@ -1207,200 +1209,172 @@
     }
 
     // ============================================================
-    //  MAWAQIT — Intelligent mosque search + iframe embed
+    //  MAWAQIT — Recherche mosquée par ville + iframe embed
     // ============================================================
-    // MAWAQIT public API via CORS proxy (allorigins.win)
-    // Widget URL: https://mawaqit.net/fr/<slug>?widget=1
-    const MAWAQIT_PROXY = 'https://api.allorigins.win/raw?url=';
-    const MAWAQIT_API   = 'https://mawaqit.net/api/2.0/mosque/search';
+    // Proxies CORS tentés dans l'ordre jusqu'au premier qui répond
+    const MAWAQIT_PROXIES = [
+        url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+        url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+    ];
+    const MAWAQIT_API = 'https://mawaqit.net/api/2.0/mosque/search';
 
-    async function searchMawaqitMosques(targetResults, targetIframe) {
-        const inputId = targetResults === 'mawaqit-table-results'
-            ? 'mawaqit-table-search-input' : 'mawaqit-search-input';
-        const word = document.getElementById(inputId).value.trim() || 'Paris';
-        const resultsEl = document.getElementById(targetResults || 'mawaqit-mosque-results');
-        const iframeEl  = document.getElementById(targetIframe  || 'mawaqit-iframe-container');
-
-        resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p style="color:var(--primary-green);">Recherche des mosquées MAWAQIT…</p></div>`;
-        iframeEl.innerHTML  = '';
-
-        try {
-            const url = `${MAWAQIT_PROXY}${encodeURIComponent(`${MAWAQIT_API}?word=${encodeURIComponent(word)}&`)}`;
-            const res  = await fetch(url);
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            const mosques = await res.json();
-
-            if (!Array.isArray(mosques) || mosques.length === 0) {
-                resultsEl.innerHTML = `<div class="info-banner"><i class="fas fa-exclamation-circle"></i><span>Aucune mosquée MAWAQIT trouvée pour "<strong>${word}</strong>". Essayez une autre ville ou écrivez en français / arabe.</span></div>`;
-                return;
-            }
-
-            const top = mosques.slice(0, 12);
-            resultsEl.innerHTML = `
-                <p style="color:#888; font-size:0.88rem; margin-bottom:12px;">${mosques.length} mosquée(s) trouvée(s). Cliquez sur une mosquée pour afficher ses horaires.</p>
-                <div class="mawaqit-mosque-list">
-                    ${top.map(m => `
-                        <div class="mosque-card" onclick="embedMawaqitMosque('${m.slug}', '${escapeAttr(m.name)}', '${targetIframe || 'mawaqit-iframe-container'}', this)">
-                            <i class="fas fa-mosque"></i>
-                            <div class="mosque-card-info">
-                                <div class="mosque-card-name">${m.name || 'Mosquée'}</div>
-                                <div class="mosque-card-city">${[m.city, m.zipCode, m.countryCode].filter(Boolean).join(' · ')}</div>
-                            </div>
-                        </div>`).join('')}
-                </div>`;
-
-            // Auto-embed the first result
-            embedMawaqitMosque(top[0].slug, top[0].name, targetIframe || 'mawaqit-iframe-container',
-                resultsEl.querySelector('.mosque-card'));
-
-        } catch (e) {
-            // Fallback: offer a direct link to MAWAQIT search page
-            resultsEl.innerHTML = `
-                <div class="info-banner"><i class="fas fa-exclamation-circle"></i>
-                <span>Impossible d'accéder à l'API MAWAQIT automatiquement (CORS). 
-                <a href="https://mawaqit.net/fr?q=${encodeURIComponent(word)}" target="_blank" rel="noopener" 
-                   style="color:var(--primary-green); font-weight:bold;">Ouvrir la recherche MAWAQIT directement</a> et copier le slug de la mosquée ci-dessous.</span></div>
-                <div class="mawaqit-search-box" style="margin-top:12px;">
-                    <input type="text" id="mawaqit-slug-manual-${targetIframe||'main'}" placeholder="Ex: mosquee-de-paris" style="flex:1;">
-                    <button class="btn" onclick="embedMawaqitBySlug('${targetIframe||'mawaqit-iframe-container'}')"><i class="fas fa-play"></i> Afficher</button>
-                </div>`;
-            showMessage('Recherche MAWAQIT — entrez le slug manuellement', 'error');
+    // Essaye chaque proxy en cascade jusqu'à succès
+    async function mawaqitFetch(word) {
+        const apiUrl = `${MAWAQIT_API}?word=${encodeURIComponent(word)}`;
+        for (const buildProxy of MAWAQIT_PROXIES) {
+            try {
+                const res = await fetch(buildProxy(apiUrl), { signal: AbortSignal.timeout(7000) });
+                if (!res.ok) continue;
+                const data = await res.json();
+                if (Array.isArray(data)) return data;
+            } catch (_) { /* essai suivant */ }
         }
+        return null;
     }
 
-    function escapeAttr(s) {
-        return (s || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    // Recherche déclenchée par le bouton — section Prières
+    async function searchMawaqitMosques() {
+        await mawaqitDoSearch('mawaqit-search-input', 'mawaqit-mosque-results', 'mawaqit-iframe-container');
     }
 
-    function embedMawaqitMosque(slug, name, containerId, cardEl) {
+    // Recherche déclenchée par le bouton — section Table Prière
+    async function searchMawaqitMosquesTable() {
+        await mawaqitDoSearch('mawaqit-table-search-input', 'mawaqit-table-results', 'mawaqit-table-iframe-container');
+    }
+
+    // Fonction unique réutilisée par les deux sections
+    async function mawaqitDoSearch(inputId, resultsId, iframeId) {
+        const word = (document.getElementById(inputId).value || '').trim() || 'Paris';
+        const resultsEl = document.getElementById(resultsId);
+        const iframeEl  = document.getElementById(iframeId);
+
+        resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div>
+            <p style="color:var(--primary-green);">Recherche MAWAQIT pour "<strong>${word}</strong>"…</p></div>`;
+        iframeEl.innerHTML = '';
+
+        const mosques = await mawaqitFetch(word);
+
+        if (!mosques) {
+            // Tous les proxies ont échoué → fallback manuel
+            resultsEl.innerHTML = mawaqitFallbackHTML(word, iframeId);
+            return;
+        }
+
+        if (mosques.length === 0) {
+            resultsEl.innerHTML = `<div class="info-banner"><i class="fas fa-exclamation-circle"></i>
+                <span>Aucune mosquée MAWAQIT trouvée pour "<strong>${word}</strong>".
+                Essayez un nom de ville différent (ex : Nice, Lyon, Alger, Casablanca…)</span></div>
+                ${mawaqitFallbackHTML(word, iframeId)}`;
+            return;
+        }
+
+        const top = mosques.slice(0, 12);
+        resultsEl.innerHTML = `
+            <p style="color:#888;font-size:0.88rem;margin-bottom:12px;">
+                <i class="fas fa-check-circle" style="color:var(--primary-green)"></i>
+                ${mosques.length} mosquée(s) trouvée(s) pour "<strong>${word}</strong>" — cliquez pour charger les horaires.
+            </p>
+            <div class="mawaqit-mosque-list">
+                ${top.map((m, i) => `
+                    <div class="mosque-card${i === 0 ? ' selected' : ''}"
+                         onclick="mawaqitEmbed('${m.slug}','${mawaqitEscAttr(m.name)}','${iframeId}',this)">
+                        <i class="fas fa-mosque"></i>
+                        <div class="mosque-card-info">
+                            <div class="mosque-card-name">${m.name || 'Mosquée'}</div>
+                            <div class="mosque-card-city">${[m.city, m.zipCode, m.countryCode].filter(Boolean).join(' · ')}</div>
+                        </div>
+                    </div>`).join('')}
+            </div>`;
+
+        // Charger automatiquement la première mosquée
+        mawaqitEmbed(top[0].slug, top[0].name, iframeId, resultsEl.querySelector('.mosque-card'));
+    }
+
+    // Intègre l'iframe pour une mosquée donnée
+    function mawaqitEmbed(slug, name, iframeId, cardEl) {
+        // Mettre à jour la sélection visuelle
         if (cardEl) {
-            cardEl.closest('.mawaqit-mosque-list')?.querySelectorAll('.mosque-card').forEach(c => c.classList.remove('selected'));
+            const list = cardEl.closest('.mawaqit-mosque-list');
+            if (list) list.querySelectorAll('.mosque-card').forEach(c => c.classList.remove('selected'));
             cardEl.classList.add('selected');
         }
-        const container = document.getElementById(containerId);
-        const widgetUrl = `https://mawaqit.net/fr/${slug}?widget=1`;
+        const container = document.getElementById(iframeId);
+        // URL iframe officielle MAWAQIT avec paramètre widget
+        const src = `https://mawaqit.net/fr/${slug}?widget=1`;
         container.innerHTML = `
-            <div style="margin-bottom: 10px; display:flex; align-items:center; gap: 10px; flex-wrap:wrap;">
+            <div style="margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                 <span class="mawaqit-badge"><i class="fas fa-mosque"></i> MAWAQIT</span>
                 <strong style="color:var(--dark-blue);">${name}</strong>
                 <a href="https://mawaqit.net/fr/${slug}" target="_blank" rel="noopener"
-                   style="font-size:0.82rem; color:var(--primary-green); display:flex; align-items:center; gap:4px;">
-                   <i class="fas fa-external-link-alt"></i> Ouvrir dans MAWAQIT
+                   style="font-size:0.82rem;color:var(--primary-green);display:flex;align-items:center;gap:4px;">
+                   <i class="fas fa-external-link-alt"></i> Ouvrir dans un nouvel onglet
                 </a>
             </div>
             <div class="mawaqit-iframe-wrap">
-                <iframe src="${widgetUrl}"
-                    title="Horaires de prière — ${name}"
+                <iframe src="${src}"
+                    title="Horaires — ${name}"
                     loading="lazy"
                     allow="geolocation"
-                    sandbox="allow-scripts allow-same-origin allow-popups">
+                    referrerpolicy="no-referrer-when-downgrade"
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms">
                 </iframe>
             </div>`;
     }
 
-    function embedMawaqitBySlug(containerId) {
-        const suffix = containerId === 'mawaqit-iframe-container' ? 'main' : containerId;
-        const slug = document.getElementById('mawaqit-slug-manual-' + suffix)?.value.trim();
-        if (!slug) { showMessage('Veuillez entrer un slug valide', 'error'); return; }
-        embedMawaqitMosque(slug, slug, containerId, null);
+    // Embed manuel via slug tapé à la main
+    function mawaqitEmbedManual(iframeId, inputId) {
+        const slug = (document.getElementById(inputId)?.value || '').trim();
+        if (!slug) { showMessage('Entrez un slug valide (ex: mosquee-de-paris)', 'error'); return; }
+        mawaqitEmbed(slug, slug, iframeId, null);
     }
 
-    // Wrapper for the prayer section search button
-    function searchMawaqitMosques() {
-        window.__mawaqitSearch('mawaqit-mosque-results', 'mawaqit-iframe-container');
+    function mawaqitEscAttr(s) {
+        return (s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
     }
 
-    // Wrapper for the table section search button
-    function searchMawaqitMosquesTable() {
-        window.__mawaqitSearch('mawaqit-table-results', 'mawaqit-table-iframe-container');
-    }
-
-    // Unified internal search
-    window.__mawaqitSearch = async function(targetResults, targetIframe) {
-        const inputId = targetResults === 'mawaqit-table-results'
-            ? 'mawaqit-table-search-input' : 'mawaqit-search-input';
-        const word = document.getElementById(inputId).value.trim() || 'Paris';
-        const resultsEl = document.getElementById(targetResults);
-        const iframeEl  = document.getElementById(targetIframe);
-
-        resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p style="color:var(--primary-green);">Recherche des mosquées MAWAQIT…</p></div>`;
-        iframeEl.innerHTML  = '';
-
-        try {
-            const url = `${MAWAQIT_PROXY}${encodeURIComponent(`${MAWAQIT_API}?word=${encodeURIComponent(word)}&`)}`;
-            const res  = await fetch(url);
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            const mosques = await res.json();
-
-            if (!Array.isArray(mosques) || mosques.length === 0) {
-                resultsEl.innerHTML = `<div class="info-banner"><i class="fas fa-exclamation-circle"></i><span>Aucune mosquée trouvée pour "<strong>${word}</strong>". Essayez une autre orthographe.</span></div>`;
-                return;
-            }
-
-            const top = mosques.slice(0, 12);
-            resultsEl.innerHTML = `
-                <p style="color:#888; font-size:0.88rem; margin-bottom:12px;">${mosques.length} mosquée(s) trouvée(s) — cliquez pour charger les horaires.</p>
-                <div class="mawaqit-mosque-list">
-                    ${top.map(m => `
-                        <div class="mosque-card" onclick="embedMawaqitMosque('${m.slug}', '${escapeAttr(m.name)}', '${targetIframe}', this)">
-                            <i class="fas fa-mosque"></i>
-                            <div class="mosque-card-info">
-                                <div class="mosque-card-name">${m.name || 'Mosquée'}</div>
-                                <div class="mosque-card-city">${[m.city, m.zipCode, m.countryCode].filter(Boolean).join(' · ')}</div>
-                            </div>
-                        </div>`).join('')}
-                </div>`;
-
-            // Auto-embed first result
-            embedMawaqitMosque(top[0].slug, top[0].name, targetIframe,
-                resultsEl.querySelector('.mosque-card'));
-
-        } catch (e) {
-            resultsEl.innerHTML = `
-                <div class="info-banner"><i class="fas fa-exclamation-circle"></i>
-                <span>Erreur API MAWAQIT.
+    function mawaqitFallbackHTML(word, iframeId) {
+        const manualId = `mawaqit-manual-${iframeId}`;
+        return `
+        <div class="info-banner" style="margin-top:12px;">
+            <i class="fas fa-info-circle"></i>
+            <span>
+                Proxy CORS indisponible pour le moment.
                 <a href="https://mawaqit.net/fr?q=${encodeURIComponent(word)}" target="_blank" rel="noopener"
-                   style="color:var(--primary-green); font-weight:bold;">Rechercher sur mawaqit.net</a>
-                puis entrez le slug manuellement :</span></div>
-                <div class="mawaqit-search-box" style="margin-top:12px;">
-                    <input type="text" id="mawaqit-slug-manual-${targetIframe}" placeholder="Ex: mosquee-de-paris" style="flex:1; max-width:280px;">
-                    <button class="btn" onclick="embedMawaqitBySlug('${targetIframe}', '${targetIframe}')"><i class="fas fa-play"></i> Afficher</button>
-                </div>`;
-            showMessage('Recherche MAWAQIT — entrez le slug manuellement', 'error');
-        }
-    };
-
-    // Override embedMawaqitBySlug to accept optional slug input id
-    function embedMawaqitBySlug(containerId, inputSuffix) {
-        const sfx = inputSuffix || containerId;
-        const slug = document.getElementById('mawaqit-slug-manual-' + sfx)?.value.trim();
-        if (!slug) { showMessage('Veuillez entrer un slug valide (ex: mosquee-de-paris)', 'error'); return; }
-        embedMawaqitMosque(slug, slug, containerId, null);
+                   style="color:var(--primary-green);font-weight:bold;">Ouvrir mawaqit.net</a>,
+                choisir une mosquée, copier son identifiant depuis l'URL
+                (ex : <code>mosquee-la-madeleine-nice</code>) et collez-le ci-dessous :
+            </span>
+        </div>
+        <div class="mawaqit-search-box" style="margin-top:10px;">
+            <input type="text" id="${manualId}" placeholder="Ex: mosquee-la-madeleine-nice" style="flex:1;">
+            <button class="btn" onclick="mawaqitEmbedManual('${iframeId}','${manualId}')">
+                <i class="fas fa-play"></i> Afficher
+            </button>
+        </div>`;
     }
 
+    // GPS — section Prières
     async function mawaqitGPS() {
         if (!navigator.geolocation) { showMessage('GPS non disponible', 'error'); return; }
         showMessage('Localisation GPS en cours…');
         navigator.geolocation.getCurrentPosition(
             async pos => {
                 const { latitude: lat, longitude: lon } = pos.coords;
-                // Reverse geocode to city name using Open Meteo
                 try {
                     const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=fr`);
                     const d = await r.json();
-                    const city = d.address?.city || d.address?.town || d.address?.village || 'Ville inconnue';
+                    const city = d.address?.city || d.address?.town || d.address?.village || `${lat.toFixed(3)},${lon.toFixed(3)}`;
                     document.getElementById('mawaqit-search-input').value = city;
-                    window.__mawaqitSearch('mawaqit-mosque-results', 'mawaqit-iframe-container');
-                } catch {
-                    document.getElementById('mawaqit-search-input').value = `${lat.toFixed(4)},${lon.toFixed(4)}`;
-                    window.__mawaqitSearch('mawaqit-mosque-results', 'mawaqit-iframe-container');
-                }
+                } catch { document.getElementById('mawaqit-search-input').value = `${lat.toFixed(4)},${lon.toFixed(4)}`; }
+                await searchMawaqitMosques();
             },
             () => showMessage('GPS refusé — saisissez votre ville manuellement', 'error'),
             { enableHighAccuracy: true, timeout: 8000 }
         );
     }
 
+    // GPS — section Table Prière
     async function mawaqitTableGPS() {
         if (!navigator.geolocation) { showMessage('GPS non disponible', 'error'); return; }
         showMessage('Localisation GPS en cours…');
@@ -1410,13 +1384,10 @@
                 try {
                     const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=fr`);
                     const d = await r.json();
-                    const city = d.address?.city || d.address?.town || d.address?.village || 'Ville inconnue';
+                    const city = d.address?.city || d.address?.town || d.address?.village || `${lat.toFixed(3)},${lon.toFixed(3)}`;
                     document.getElementById('mawaqit-table-search-input').value = city;
-                    window.__mawaqitSearch('mawaqit-table-results', 'mawaqit-table-iframe-container');
-                } catch {
-                    document.getElementById('mawaqit-table-search-input').value = `${lat.toFixed(4)},${lon.toFixed(4)}`;
-                    window.__mawaqitSearch('mawaqit-table-results', 'mawaqit-table-iframe-container');
-                }
+                } catch { document.getElementById('mawaqit-table-search-input').value = `${lat.toFixed(4)},${lon.toFixed(4)}`; }
+                await searchMawaqitMosquesTable();
             },
             () => showMessage('GPS refusé — saisissez votre ville manuellement', 'error'),
             { enableHighAccuracy: true, timeout: 8000 }
